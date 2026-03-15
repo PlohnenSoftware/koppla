@@ -159,7 +159,6 @@ function renderSVG(
             const y = round(Number(node.y) + Number(label.y));
             return (
                 `
-                <rect x="${x}" y="${y}" width="${label.width}" height="${label.height}" class="textbg"/>
                 <text x="${x}" y="${y}">${label.text}</text>
                 ` +
                 (drawBoxes
@@ -188,9 +187,8 @@ function renderSVG(
         stroke: none;
         dominant-baseline: hanging;
     }
-    .textbg {
+    .pagebg {
         fill: #FFFFFF;
-        fill-opacity: 0.8;
         stroke: none;
     }
     .wire {
@@ -210,6 +208,7 @@ function renderSVG(
         layout.height
     }" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
         <style>${fontStyle}</style>
+        <rect x="0" y="0" width="${layout.width}" height="${layout.height}" class="pagebg"/>
         ${svgSymbols.join("\n")}
         ${svgWires.join("\n")}
         ${svgJunctions.join("\n")}
