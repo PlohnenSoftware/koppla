@@ -142,6 +142,10 @@
     "VDC": {
         "ID": "dc_source",
         "terminals": ["-", "+"]
+    },
+    "VAC": {
+        "ID": "variable_source",
+        "terminals": ["-", "+"]
     }
 
 }
