@@ -73,6 +73,10 @@ function round(value: number | string | undefined): string {
     return String(Math.round(Number(value) * 1000) / 1000);
 }
 
+function roundUpOneDecimal(value: number): string {
+    return (Math.ceil(value * 10) / 10).toFixed(1);
+}
+
 function renderSVG(
     layout: KopplaELKRoot,
     font: LoadedFont,
@@ -257,8 +261,11 @@ function renderSVG(
     ${skin.styleCache.CSS}
     `;
 
+    const viewWidth = roundUpOneDecimal(layout.width);
+    const viewHeight = roundUpOneDecimal(totalHeight);
+
     return minify(`<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-        <svg width="${layout.width}" height="${totalHeight}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 ${viewWidth} ${viewHeight}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
         <style>${fontStyle}</style>
         <rect x="0" y="0" width="${layout.width}" height="${totalHeight}" class="pagebg"/>
         <g transform="translate(0, ${topMargin})">
