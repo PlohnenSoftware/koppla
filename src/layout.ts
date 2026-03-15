@@ -232,7 +232,21 @@ function labelsFromNode(node: CompiledNode, font: LoadedFont): Label[] {
         labels.push(makeLabel(node.ID, font.width, font.height));
     }
     if (node.description) {
-        labels.push(makeLabel(node.description, font.width, font.height));
+        const descriptionLabel = makeLabel(
+            node.description,
+            font.width,
+            font.height
+        );
+        const placeLongDescriptionLeft =
+            node.description.length > MAX_NODE_LABEL_LENGTH &&
+            (node.designator === "V" ||
+                node.symbolInfo?.ID?.includes("source"));
+        if (placeLongDescriptionLeft) {
+            descriptionLabel.layoutOptions = {
+                "elk.nodeLabels.placement": "OUTSIDE H_LEFT V_CENTER",
+            };
+        }
+        labels.push(descriptionLabel);
     }
     if (node.value) {
         const label = makeLabel(
@@ -250,14 +264,25 @@ function labelsFromNode(node: CompiledNode, font: LoadedFont): Label[] {
     return labels;
 }
 
+const MAX_NODE_LABEL_LENGTH = 16;
+const LABEL_LINE_HEIGHT_MULTIPLIER = 1.4;
+
 let labelIndex = 0;
 
 function makeLabel(text: string, fontWidth: number, fontHeight: number): Label {
+    const lines = text.split("\n");
+    const maxLineLength = Math.max(...lines.map((line) => line.length), 0);
+    const lineHeight = fontHeight * LABEL_LINE_HEIGHT_MULTIPLIER;
+    const height =
+        lines.length === 1
+            ? fontHeight
+            : fontHeight + (lines.length - 1) * lineHeight;
+
     return {
         id: `LBL${labelIndex++}`,
         text,
-        width: fontWidth * text.length,
-        height: fontHeight,
+        width: fontWidth * maxLineLength,
+        height,
     };
 }
 

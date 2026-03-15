@@ -336,7 +336,12 @@ export function createParser(): Parser {
     Boolean "boolean" = "true" / "false"
     AlphaNumeric = $(Character / Numeric / Sign / ".")+
     Character = [a-z]i
-    StringCharacter = char:[^\\\\"] {return char;} / "\\\\" '"' {return '"';}
+    StringCharacter =
+        "\\\\n" {return "\\n";}
+        / "\\\\t" {return "\\t";}
+        / "\\\\\\\\" {return "\\\\";}
+        / "\\\\\\\"" {return '"';}
+        / char:[^\\\\"] {return char;}
     Numeric = [0-9]
     Sign = "+" / "-"
 `;

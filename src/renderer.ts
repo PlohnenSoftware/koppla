@@ -61,7 +61,9 @@ function charsInNode(node: ELKNode): string {
     const usedChars = new Set<string>;
     for (const label of labels) {
         for (const char of label.text) {
-            usedChars.add(char);
+            if (char !== "\n") {
+                usedChars.add(char);
+            }
         }
     }
     return [...usedChars.keys()].join("");  
@@ -175,13 +177,25 @@ function renderSVG(
         return [...labels, ...portLabels].map((label) => {
             const x = round(Number(node.x) + Number(label.x));
             const y = round(Number(node.y) + Number(label.y));
+            const lines = label.text.split("\n");
+            const lineHeight = font.height * 1.4;
             if (bakeText && font.font) {
+                const fontFace = font.font;
                 const scale = font.height / font.font.unitsPerEm;
-                const yBaseline = Number(y) + font.font.ascender * scale;
-                const path = font.font.getPath(label.text, Number(x), yBaseline, font.height);
+                const yBaseline = Number(y) + fontFace.ascender * scale;
+                const paths = lines.map((line, index) => {
+                    const lineBaseline = yBaseline + index * lineHeight;
+                    const path = fontFace.getPath(
+                        line,
+                        Number(x),
+                        lineBaseline,
+                        font.height
+                    );
+                    return `<path d="${path.toPathData(3)}" class="textpath"/>`;
+                });
                 return (
                     `
-                    <path d="${path.toPathData(3)}" class="textpath"/>
+                    ${paths.join("\n")}
                     ` +
                     (drawBoxes
                         ? `<rect x="${x}" y="${y}" width="${label.width}" height="${label.height}" style="fill:none;stroke:#000000;stroke-width:1;"/>`
@@ -190,7 +204,12 @@ function renderSVG(
             }
             return (
                 `
-                <text x="${x}" y="${y}">${label.text}</text>
+                <text x="${x}" y="${y}">${lines
+                    .map((line, index) => {
+                        const dy = index === 0 ? 0 : lineHeight;
+                        return `<tspan x="${x}" dy="${dy}">${line}</tspan>`;
+                    })
+                    .join("")}</text>
                 ` +
                 (drawBoxes
                     ? `<rect x="${x}" y="${y}" width="${label.width}" height="${label.height}" style="fill:none;stroke:#000000;stroke-width:1;"/>`
