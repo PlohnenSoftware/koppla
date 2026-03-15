@@ -4,7 +4,7 @@ interface NodeID {
     ID: string;
     resolved: boolean;
 }
-declare type CompiledDefinition = Pick<Definition, "description" | "symbol" | "value" | "location"> & Required<Pick<Definition, "designator">>;
+type CompiledDefinition = Pick<Definition, "description" | "symbol" | "value" | "location"> & Required<Pick<Definition, "designator">>;
 interface CompiledConnection {
     source: NodeID;
     target: NodeID;

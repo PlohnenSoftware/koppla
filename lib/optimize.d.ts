@@ -6,5 +6,5 @@ import { KopplaELKNode, KopplaELKRoot } from "./layout";
  */
 export declare function optimize(root: KopplaELKRoot, preprocessed: KopplaELKRoot): KopplaELKRoot;
 export declare function lockPortPlacements(preprocessed: KopplaELKRoot): void;
-export declare type PortPlacement = "N" | "S" | "E" | "W";
+export type PortPlacement = "N" | "S" | "E" | "W";
 export declare function portPlacements(node: KopplaELKNode): PortPlacement[];

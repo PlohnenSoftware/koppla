@@ -1,4 +1,4 @@
-export declare type CommandlineOptions = Record<symbol, number | string | boolean>;
+export type CommandlineOptions = Record<symbol, number | string | boolean>;
 /**
  * Parses command line arguments into options and file arguments.
  * Accepts options of the type `-arg=value` mixed with non-option

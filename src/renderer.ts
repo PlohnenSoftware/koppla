@@ -66,6 +66,9 @@ function renderSVG(
     skin: Skin,
     drawBoxes: boolean,
 ): string {
+    assert(layout.width !== undefined);
+    assert(layout.height !== undefined);
+
     const svgSymbols = layout.children.reduce((commands, node) => {
         assert(node.x !== undefined);
         assert(node.y !== undefined);
@@ -117,6 +120,9 @@ function renderSVG(
         }
         return commands;
     }, [] as string[]);
+
+    const topMargin = Math.round(font.height * 0.6);
+    const totalHeight = layout.height + topMargin;
 
     const svgWires = layout.edges.reduce((commands, edge) => {
         const lines = (edge.sections ?? []).reduce((lines, section) => {
@@ -204,15 +210,15 @@ function renderSVG(
     `;
 
     return minify(`<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-        <svg width="${layout.width}" height="${
-        layout.height
-    }" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+        <svg width="${layout.width}" height="${totalHeight}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
         <style>${fontStyle}</style>
-        <rect x="0" y="0" width="${layout.width}" height="${layout.height}" class="pagebg"/>
+        <rect x="0" y="0" width="${layout.width}" height="${totalHeight}" class="pagebg"/>
+        <g transform="translate(0, ${topMargin})">
         ${svgSymbols.join("\n")}
         ${svgWires.join("\n")}
         ${svgJunctions.join("\n")}
         ${svgLabels.join("\n")}
+        </g>
         </svg>`);
 }
 

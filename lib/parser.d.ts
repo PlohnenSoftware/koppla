@@ -9,7 +9,7 @@ export interface SymbolicValue {
     type: "SymbolicValue";
     value: string;
 }
-export declare type Value = NumericValue | SymbolicValue;
+export type Value = NumericValue | SymbolicValue;
 export interface Definition {
     type: "Definition";
     designator?: {
@@ -35,7 +35,7 @@ export interface Port {
     symbol?: string;
     location: SourceLocation;
 }
-export declare type Node = Component | Port;
+export type Node = Component | Port;
 interface Connection {
     sourceTerminal?: string;
     target: Node;
@@ -59,7 +59,7 @@ interface TypedBoolean {
     type: "Boolean";
     value: boolean;
 }
-export declare type TypedValue = TypedString | TypedNumber | TypedBoolean;
+export type TypedValue = TypedString | TypedNumber | TypedBoolean;
 export interface Settings {
     type: "Settings";
     settings: Array<{
@@ -76,7 +76,7 @@ export interface SourceLocation {
         column: number;
     };
 }
-export declare type Statement = ConnectionStatement | Definition | Settings;
+export type Statement = ConnectionStatement | Definition | Settings;
 export interface Schematic {
     type: "Schematic";
     body: Statement[];

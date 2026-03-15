@@ -20,7 +20,7 @@ export async function loadFontFromFile(
 
 export function loadFontFromFont(font: Font, size: number): LoadedFont {
     const firstGlyph = font.glyphs.get(0);
-    const firstChar = String.fromCharCode(firstGlyph.unicode);
+    const firstChar = String.fromCharCode(firstGlyph.unicode ?? 0);
     const charWidth = font.getAdvanceWidth(firstChar, size);
     const fontData = Buffer.from(font.toArrayBuffer());
     const encoded = fontData.toString("base64");

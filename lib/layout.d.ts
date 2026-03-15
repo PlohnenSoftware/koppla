@@ -2,7 +2,7 @@ import { Node as ELKNode } from "elkjs";
 import { CompiledNode, CompiledSchematic } from "./compiler";
 import { LoadedFont } from "./font";
 import { Skin, SymbolSkin } from "./skin";
-export declare type KopplaELKNode = ELKNode & {
+export type KopplaELKNode = ELKNode & {
     koppla: {
         node: CompiledNode;
         skin?: SymbolSkin;
@@ -10,7 +10,7 @@ export declare type KopplaELKNode = ELKNode & {
         flip: boolean;
     };
 };
-export declare type KopplaELKRoot = Omit<ELKNode, "children" | "edges"> & Pick<Required<ELKNode>, "edges"> & {
+export type KopplaELKRoot = Omit<ELKNode, "children" | "edges"> & Pick<Required<ELKNode>, "edges"> & {
     children: KopplaELKNode[];
 };
 export declare function layout(schematic: CompiledSchematic, skin: Skin, font: LoadedFont, options?: {
