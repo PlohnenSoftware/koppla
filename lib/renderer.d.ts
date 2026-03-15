@@ -5,5 +5,6 @@ export interface RenderOptions {
     drawBoxes?: boolean;
     fontFile?: string;
     fontSize: number;
+    bakeText?: boolean;
 }
 export declare function render(schematic: CompiledSchematic, skin: Skin, options?: RenderOptions): Promise<string>;

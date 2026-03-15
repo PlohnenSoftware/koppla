@@ -11,6 +11,7 @@ export interface RenderOptions {
     drawBoxes?: boolean;
     fontFile?: string;
     fontSize: number;
+    bakeText?: boolean;
 }
 
 export async function render(
@@ -23,16 +24,26 @@ export async function render(
     }
 ): Promise<string> {
     let font: LoadedFont = defaultFont(options.fontSize);
+    const bakeText = !!options.bakeText;
     
     if (options.fontFile) {
         font = await loadFontFromFile(options.fontFile, options.fontSize);
     }
     const laidOut = await layout(schematic, skin, font, options);
-    if (font.font) {
+    if (font.font && !bakeText) {
         const usedChars = charsInNode(laidOut);
         font = loadFontFromFont(trimFont(font.font, usedChars), options.fontSize);
     }
-    return renderSVG(laidOut as KopplaELKRoot, font, skin, !!options.drawBoxes);
+    if (bakeText) {
+        font = { ...font, dataURL: undefined };
+    }
+    return renderSVG(
+        laidOut as KopplaELKRoot,
+        font,
+        skin,
+        !!options.drawBoxes,
+        bakeText
+    );
 }
 
 function labelsInTree(node: ELKNode): Label[] {
@@ -65,6 +76,7 @@ function renderSVG(
     font: LoadedFont,
     skin: Skin,
     drawBoxes: boolean,
+    bakeText: boolean,
 ): string {
     assert(layout.width !== undefined);
     assert(layout.height !== undefined);
@@ -163,6 +175,19 @@ function renderSVG(
         return [...labels, ...portLabels].map((label) => {
             const x = round(Number(node.x) + Number(label.x));
             const y = round(Number(node.y) + Number(label.y));
+            if (bakeText && font.font) {
+                const scale = font.height / font.font.unitsPerEm;
+                const yBaseline = Number(y) + font.font.ascender * scale;
+                const path = font.font.getPath(label.text, Number(x), yBaseline, font.height);
+                return (
+                    `
+                    <path d="${path.toPathData(3)}" class="textpath"/>
+                    ` +
+                    (drawBoxes
+                        ? `<rect x="${x}" y="${y}" width="${label.width}" height="${label.height}" style="fill:none;stroke:#000000;stroke-width:1;"/>`
+                        : "")
+                );
+            }
             return (
                 `
                 <text x="${x}" y="${y}">${label.text}</text>
@@ -202,6 +227,10 @@ function renderSVG(
         stroke:#000;
         stroke-width:3.5;
         stroke-linecap:round;
+    }
+    .textpath {
+        fill:#000;
+        stroke:none;
     }
     .dot {
         fill:#000;

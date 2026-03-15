@@ -33,7 +33,9 @@ usage:
 options:
     -output=<output.svg>
     -fontFile=<font.ttf>
+    -useAltFont
     -fontSize=<font size in pixels>
+    -bakeText
     -watch
     -port=<preview port, defaults to 8080>
 ```
@@ -45,9 +47,9 @@ No output file is generated in watch mode.
 
 ## Fonts
 
-`koppla` requires a monospace font to function. By default, the included "Inconsolata Regular" is used.
+`koppla` requires a monospace font to function. By default, the included "Inconsolata Regular" is used. Use `-useAltFont` to switch to the bundled Maple Mono.
 
-The font is embedded with each generated SVG. Before embedding the font is stripped based on the characters used in the schematic.
+The font is embedded with each generated SVG. Before embedding the font is stripped based on the characters used in the schematic. Use `-bakeText` to convert labels into vector paths instead of embedding a font.
 
 ## Syntax
 

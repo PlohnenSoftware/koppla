@@ -17,6 +17,8 @@ interface Options extends CommandlineOptions {
 
     fontFile: string;
     fontSize: number;
+    useAltFont: boolean;
+    bakeText: boolean;
 
     watch: boolean;
     port: number;
@@ -39,7 +41,9 @@ usage:
 options:
     -output=<output.svg>
     -fontFile=<font.ttf>
+    -useAltFont
     -fontSize=<font size in pixels>
+    -bakeText
     -watch
     -port=<preview port, defaults to 8080>
 `);
@@ -52,6 +56,8 @@ function parseArgs(args: string[]): Options {
         fontFile: "",
         output: "",
         fontSize: 20,
+        useAltFont: false,
+        bakeText: false,
         watch: false,
         port: 8080,
         help: false,
@@ -91,7 +97,9 @@ export async function main(args: string[]) {
     const options = parseArgs(args.slice(2));
 
     if (options.fontFile === "") {
-        options.fontFile = findResource("fonts/inconsolata.regular.ttf");
+        options.fontFile = options.useAltFont
+            ? findResource("fonts/MapleMonoNL-Regular.otf")
+            : findResource("fonts/inconsolata.regular.ttf");
     }
 
     const skin = new Skin();
@@ -123,6 +131,7 @@ async function renderToFile(
             optimize: true,
             fontFile: options.fontFile,
             fontSize: options.fontSize,
+            bakeText: options.bakeText,
         });
     } catch (err) {
         console.log(`Rendering failed: ${err}`);
@@ -150,6 +159,7 @@ async function watchAndRender(
                 drawBoxes: options.debugDrawBoxes,
                 fontFile: options.fontFile,
                 fontSize: options.fontSize,
+                bakeText: options.bakeText,
             });
         } catch (err) {
             rendered = `<pre>${err}</pre>`;

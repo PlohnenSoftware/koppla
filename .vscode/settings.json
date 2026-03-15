@@ -1,0 +1,5 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "./work/render_all.sh": true
+    }
+}
