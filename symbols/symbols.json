@@ -138,5 +138,10 @@
     "GND": {
         "ID": "ground",
         "terminals": ["g"]
+    },
+    "VDC": {
+        "ID": "dc_source",
+        "terminals": ["-", "+"]
     }
+
 }
