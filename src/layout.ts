@@ -298,7 +298,7 @@ function setupLabelPlacements(graph: KopplaELKRoot) {
                 W: "OUTSIDE H_LEFT V_CENTER",
             };
 
-            const priorities: PortPlacement[] = ["W", "E", "N", "S"];
+            const priorities: PortPlacement[] = ["E", "W", "N", "S"];
 
             for (const prio of priorities) {
                 if (!placements.includes(prio)) {
