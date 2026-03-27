@@ -1,0 +1,4 @@
+<gnd:4> - *V1:+3.3V !VDC* - [R1:10kohm] - [R2:10kohm] - <gnd:3>
+<gnd:2> - *V2:+5V !VDC* - [R3:1kohm] - [R4:220ohm] - <gnd:1>
+[R1] - <out:1>
+[R3] - <out:2>

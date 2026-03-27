@@ -1,0 +1,7 @@
+# Active filter
+
+<in> - |C1:100nF| - |C2:100nF| - [8k] - <gnd>
+|C2| - +/U1:TL072!opamp/out - [8k] - |C2|
+/U1/- - [6k] - <gnd>
+/U1/- - [10k] - out/U1/
+/U1/out - <out>

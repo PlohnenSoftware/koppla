@@ -1,0 +1,7 @@
+# Classic astable multivibrator
+# C1 = C2 and R2 = R3
+
+<V:+> - [R1] - c(Q1)e - <GND>
+<V:+> - [R2] - b(Q1)b - |C1| - c(Q2)
+<V:+> - [R3] - b(Q2)b - |C2| - c(Q1)
+<V:+> - [R4] - c(Q2)e - <GND>
