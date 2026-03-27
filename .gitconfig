@@ -1,0 +1,4 @@
+[core]
+    protectNTFS = true
+    autocrlf = true
+    
